@@ -23,9 +23,8 @@ const initialExpenses = [
   }
 ];
 function App() {
-  console.log(useState());
+  //useState
   const [expenses, setExpenses] = useState(initialExpenses);
-
   return (
     <React.Fragment>
       <Alert></Alert>
