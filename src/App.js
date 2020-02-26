@@ -32,6 +32,10 @@ function App() {
   const [amount, setAmount] = useState('');
   // alert
   const [alert, setAlert] = useState({ show: false });
+  // edit
+  const [edit, setEdit] = useState(false);
+  // edit item
+  const [id, setId] = useState(0);
   //**********functionality ****************/
 
   const handleCharge = e => {
@@ -52,13 +56,23 @@ function App() {
   const handleSubmit = e => {
     e.preventDefault();
     if (charge !== '' && amount > 0) {
-      const singleExpense = {
-        id: uuid(),
-        charge,
-        amount
-      };
-      setExpenses([...expenses, singleExpense]);
-      handleAlert({ type: 'success', text: 'item added' });
+      if (edit) {
+        let tempExpenses = expenses.map(item => {
+          return item.id === id ? { ...item, charge, amount } : item;
+        });
+
+        setExpenses(tempExpenses);
+        setEdit(false);
+        handleAlert({ type: 'success', text: 'item edited' });
+      } else {
+        const singleExpense = {
+          id: uuid(),
+          charge,
+          amount
+        };
+        setExpenses([...expenses, singleExpense]);
+        handleAlert({ type: 'success', text: 'item added' });
+      }
       setCharge('');
       setAmount('');
     } else {
@@ -70,16 +84,23 @@ function App() {
   };
 
   const clearItems = () => {
-    console.log('items deleted');
     setExpenses([]);
+    handleAlert({ type: 'danger', text: 'all items deleted' });
   };
 
   const handleDelete = id => {
-    console.log(`item deleted ${id}`);
+    const filteredExpenses = expenses.filter(expense => expense.id !== id);
+    setExpenses(filteredExpenses);
+    handleAlert({ type: 'danger', text: 'item deleted' });
   };
 
   const handleEdit = id => {
-    console.log(`item edited ${id}`);
+    let expense = expenses.find(item => item.id === id);
+    let { charge, amount } = expense;
+    setCharge(charge);
+    setAmount(amount);
+    setEdit(true);
+    setId(id);
   };
 
   return (
@@ -93,6 +114,7 @@ function App() {
           handleAmount={handleAmount}
           handleCharge={handleCharge}
           handleSubmit={handleSubmit}
+          edit={edit}
         ></ExpenseForm>
         <ExpenseList
           expenses={expenses}
