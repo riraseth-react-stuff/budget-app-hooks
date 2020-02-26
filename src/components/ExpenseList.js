@@ -3,8 +3,8 @@ import ExpenseItem from './ExpenseItem';
 const ExpenseList = () => {
   return (
     <div className="">
-      hello from expense item
-      <ExpenseItem></ExpenseItem>
+      hello from expense list
+      <ExpenseItem>sup dude bro</ExpenseItem>
     </div>
   );
 };

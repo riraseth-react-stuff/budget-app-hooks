@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ExpenseItem = () => {
-  return <div>hello from expense item</div>;
+const ExpenseItem = ({ children }) => {
+  return <div>{children}</div>;
 };
 
 export default ExpenseItem;
